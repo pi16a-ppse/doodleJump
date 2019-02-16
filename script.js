@@ -14,42 +14,64 @@ let lose = false;
 let doodle = new Image();
 let desk = new Image();
 let background = new Image();
-doodle.src = "img/doodle.png";
+doodle.src = "img/doodleRight.png";
 desk.src = "img/desk.png";
 let doodleWidth = 100;
 let doodleHeight = 100;
+let deskWidth = 100;
+let deskHeight = 30;
+//Звуки
+let jumpAudio = new Audio();
+jumpAudio.src = "audio/jump.mp3"
+jumpAudio.preload = 'auto';
+let failAudio = new Audio();
+failAudio.src = "audio/fail.mp3"
+failAudio.preload = 'auto';
 //Для отпрыгивания визуально адекватного
 let offsetLeft = 30;
 let offsetRight = 50;
 let offsetBottom = 25;
 //Видимое количество досточек
-let deskCount = 3;
+let deskCount = 10;
+//Счет
+let score = 0;
 //Координаты досточек
 let desksXY = new Array();
-// Генерация массива координат досок
-for(let i = 0; i < deskCount; i++){
+
+//Создание доски
+function createDesk(minX,maxX,minY,maxY){
   let point = new Array();
-  point.push(getRandomInt(0,width-desk.width));
-  point.push(getRandomInt(0,height-desk.height));
+  point.push(getRandomInt(minX,maxX));
+  point.push(getRandomInt(minY,maxY));
   desksXY.push(point);
 }
 
+// Генерация массива координат досок
+for(let i = 0; i < deskCount-1; i++)
+  createDesk(0,width-deskWidth,-400,height-deskHeight)
+let tempX = width/2 - deskWidth/2;
+let tempY = height - deskHeight;
+desksXY.push([tempX, tempY]);
+
 //Физические параметры
 let gravity = 5;
-let yPos = 0;
-let xPos = 0;
+let xPos = width/2 - doodleWidth/2;
+let yPos = height - doodleHeight - deskHeight - offsetBottom;
 let jumpHeight = 200;
 
 // Признак прыжка
 let jumped = false;
+
 // Функции
 
 // Прыжок по нажатию
 let newY;
 addEventListener("keydown", move)
+// Прыжок
 function jump(){
   newY = yPos - jumpHeight;
   jumped = true;
+  jumpAudio.play();
 }
 //Движение
 function move(e){
@@ -57,12 +79,14 @@ function move(e){
     case 37:  // если нажата клавиша влево
         if(xPos<0-doodleWidth)
           xPos = width;
-        xPos-=10;
+        xPos-=12;
+        doodle.src = "img/doodleLeft.png";
         break;
     case 39:   // если нажата клавиша вправо
         if(xPos>width+doodleHeight)
           xPos = 0;
-        xPos+=10;
+        xPos+=12;
+        doodle.src = "img/doodleRight.png";
         break;
   }
 }
@@ -83,19 +107,41 @@ function drawBG(){
   context.stroke();
   background.src = canvas.toDataURL();
 }
+//Признак движения камеры
+let moveCamera = false;
 //Отрисовка сцены
 function draw(){
+  //Если дудлик уже выше серидины
+  if(yPos < height/5)
+    moveCamera = true;
+  else
+    moveCamera = false;
   context.drawImage(background,0,0);
   context.drawImage(doodle,xPos,yPos,doodleWidth,doodleHeight);
-  for(let i = 0; i < deskCount; i++){
-    context.drawImage(desk,desksXY[i][0],desksXY[i][1],desk.width,desk.height);
+  //Отрисовка досок
+  for(let i = 0; i < desksXY.length; i++){
+    if(moveCamera){
+      desksXY[i][1] += 3;
+      //Увеличение счета
+      score += 1/100;
+      //Если счет увеличивается на 50, количество досок уменьшаем
+      if(score!=0&&score%50==0)
+        deskCount--;
+    }
+    context.drawImage(desk,desksXY[i][0],desksXY[i][1],deskWidth,deskHeight);
+    if(desksXY[i][1] > height){
+      desksXY.splice(i,1);
+      if(desksXY.length < deskCount)
+        createDesk(0,width-deskWidth,-200,0);
+    }
   }
+
   //Логика столкновения
-  for(let i = 0; i < deskCount; i++){
+  for(let i = 0; i < desksXY.length; i++){
       if(yPos+doodleHeight - offsetBottom >= desksXY[i][1] &&
-         yPos+doodleHeight - offsetBottom <  desksXY[i][1] + desk.height
+         yPos+doodleHeight - offsetBottom <  desksXY[i][1] + deskHeight
          && xPos + doodleWidth - offsetRight > desksXY[i][0] &&
-         xPos < desksXY[i][0] + desk.width - offsetLeft)
+         xPos < desksXY[i][0] + deskWidth - offsetLeft)
         jump();
   }
   if(jumped&&yPos>newY){
@@ -104,18 +150,26 @@ function draw(){
     jumped = false;
     yPos += gravity;
   }
+  //Счет
+  context.fillStyle = "black";
+  context.strokeStyle = "black";
+  context.font = '32px sans-serif';
+  context.strokeText(Math.floor(score), width/2-score/10, 32);
   //
   if(yPos>height+100){
+    failAudio.play();
     alert("You lose!");
     lose = true;
   }
+  //Если проиграл - выход
   if(!lose)
     requestAnimationFrame(draw);
-    else return;
+    else
+      return;
 }
 // Рандомное число
 function getRandomInt(min, max){
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 //Вызовы
