@@ -1,0 +1,21 @@
+*{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+}
+.container{
+  width: 100vw;
+  height: 100vh;
+  background-color: #7c818f;
+  padding-top: 5vh;
+  box-sizing: border-box;
+}
+.game{
+  /* height: 90vh;
+  width: 50vw; */
+  max-width: 500px;
+  background-color: white;
+  display: block;
+  margin: 0 auto;
+}
