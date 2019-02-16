@@ -32,7 +32,7 @@ let offsetLeft = 30;
 let offsetRight = 50;
 let offsetBottom = 25;
 //Видимое количество досточек
-let deskCount = 10;
+let deskCount = 15;
 //Счет
 let score = 0;
 //Координаты досточек
@@ -57,7 +57,7 @@ desksXY.push([tempX, tempY]);
 let gravity = 5;
 let xPos = width/2 - doodleWidth/2;
 let yPos = height - doodleHeight - deskHeight - offsetBottom;
-let jumpHeight = 200;
+let jumpHeight = 170;
 
 // Признак прыжка
 let jumped = false;
@@ -79,13 +79,13 @@ function move(e){
     case 37:  // если нажата клавиша влево
         if(xPos<0-doodleWidth)
           xPos = width;
-        xPos-=12;
+        xPos-=8;
         doodle.src = "img/doodleLeft.png";
         break;
     case 39:   // если нажата клавиша вправо
         if(xPos>width+doodleHeight)
           xPos = 0;
-        xPos+=12;
+        xPos+=8;
         doodle.src = "img/doodleRight.png";
         break;
   }
@@ -121,7 +121,7 @@ function draw(){
   //Отрисовка досок
   for(let i = 0; i < desksXY.length; i++){
     if(moveCamera){
-      desksXY[i][1] += 3;
+      desksXY[i][1] += 5;
       //Увеличение счета
       score += 1/100;
       //Если счет увеличивается на 50, количество досок уменьшаем
@@ -142,7 +142,8 @@ function draw(){
          yPos+doodleHeight - offsetBottom <  desksXY[i][1] + deskHeight
          && xPos + doodleWidth - offsetRight > desksXY[i][0] &&
          xPos < desksXY[i][0] + deskWidth - offsetLeft)
-        jump();
+         if(!jumped)
+            jump();
   }
   if(jumped&&yPos>newY){
     yPos -= gravity;
