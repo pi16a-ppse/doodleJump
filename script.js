@@ -146,10 +146,7 @@ function draw(){
     yPos += gravity;
   }
   //Счет
-  context.fillStyle = "black";
-  context.strokeStyle = "black";
-  context.font = '32px sans-serif';
-  context.strokeText(Math.floor(score), width/2-score/15, 32);
+  drawScore();
   //
   if(yPos>height+100){
     failAudio.play();
@@ -162,6 +159,13 @@ function draw(){
     requestAnimationFrame(draw);
     else
       return;
+}
+// Вывод счета
+function drawScore(){
+  context.fillStyle = "black";
+  context.strokeStyle = "black";
+  context.font = '32px sans-serif';
+  context.strokeText(Math.floor(score), width/2-score/15, 32);
 }
 //Отрисовка досок
 function drawDesks(){
