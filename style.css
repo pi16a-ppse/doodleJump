@@ -17,3 +17,9 @@
   display: block;
   margin: 0 auto;
 }
+.navigation{
+  height: 40px;
+  margin: 0 auto;
+  width: 450px;
+  background-color: white;
+}

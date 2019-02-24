@@ -43,7 +43,7 @@ let desksXY;
 let score = 0;
 
 //Физические параметры
-let gravity = 5;
+let gravity = 4;
 let xPos = width/2 - doodleWidth/2;
 let yPos = height - doodleHeight - deskHeight - offsetBottom;
 let jumpHeight = 170;
@@ -75,7 +75,7 @@ function createDesks(){
 function jump(){
   newY = yPos - jumpHeight;
   jumped = true;
-  jumpAudio.play();
+  // jumpAudio.play();
 }
 
 //Движение
@@ -178,6 +178,7 @@ function drawDesks(){
       if(score!=0&&score%50==0)
         deskCount--;
     }
+    //Для корректировки количества досок
     context.drawImage(desk,desksXY[i][0],desksXY[i][1],deskWidth,deskHeight);
     if(desksXY[i][1] > height){
       desksXY.splice(i,1);
@@ -195,13 +196,15 @@ function getRandomInt(min, max){
 function createScene(){
   //Координаты досточек
   desksXY = new Array();
-
+  //Признак прыжка
+  moveCamera = false;
   createDesks();
   desk.onload = draw;
   addEventListener("keydown", move);
   // Обработка клика по канвасу
   let canvasLeft = canvas.offsetLeft;
   let canvasTop = canvas.offsetTop;
+  // Клик по перегрузке
   canvas.addEventListener('click', function(event) {
     let x = event.pageX - canvasLeft;
     let y = event.pageY - canvasTop;
