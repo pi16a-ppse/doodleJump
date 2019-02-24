@@ -1,63 +1,109 @@
+// Ширина клетки фона
 let cellWidth = 20;
+// Высота клетки фона
 let cellHeight = 20;
-//Получение холста ля отрисоовки
+//Получение холста для отрисовки игрового поля
 let canvas = document.getElementById('canvas');
+// Создание объекта для работы с отрисовкой 
 let context = canvas.getContext('2d');
-
+// Ширина игрового поля
 let width = 450;
+// Высота игрового поля
 let height = 610;
+// Задаем игровому полю ширину
 canvas.setAttribute("width",width+"px");
+// Задаем высоту игровому полю
 canvas.setAttribute("height",height+"px");
 //Признак проигрыша
 let lose = false;
-//СОздание спрайтов
+//Создание спрайтов
+//Создание картинки под дудлика
 let doodle = new Image();
+// Создание картинки под значок перегрузки
 let reload = new Image();
+// Создание картинки под фон
 let background = new Image();
+// Создание картинки под досточку
 let desk = new Image();
+// Создание картинки под значок звука
 let audio = new Image();
+// Присваевам ресурс для изображения кнопки звука
 audio.src = "img/audio.png";
+// Присваевам ресурс для изображения дудлика
 doodle.src = "img/doodleRight.png";
+// Присваевам ресурс для изображения досточки
 desk.src = "img/desk.png";
+// Присваевам ресурс для изображения кнопки перегрузки
 reload.src = "img/reload.png";
+// Ширина дудлика
 let doodleWidth = 100;
+// Высота дудлика
 let doodleHeight = 100;
+// Ширина досточки
 let deskWidth = 100;
+// Высота досточки
 let deskHeight = 30;
+// Ширина кнопок перегрузка и звук
 let buttonWidth = 35;
+// Высота кнопок перегрузка и звук
 let buttonHeight = 35;
 
-//Звуки
+// Звуки
+// Создание объекта для звука прыжка
 let jumpAudio = new Audio();
+// Присвоение объекту звука прыжка ресурса со звуком
 jumpAudio.src = "audio/jump.mp3"
+// Делаем предварительную загрузку звука прыжка
 jumpAudio.preload = 'auto';
+// Создание объекта для звука проигрыша
 let failAudio = new Audio();
+// Делаем предварительную загрузку звука проигрыша
 failAudio.src = "audio/fail.mp3"
+// Делаем предварительную загрузку звука проигрыша
 failAudio.preload = 'auto';
-//Для отпрыгивания визуально адекватного
+
+// Для визуально адекватного отпрыгивания
+// вводим отступы
+// Отступ слева от картинки
 let offsetLeft = 30;
+// Отступ справа от картинки
 let offsetRight = 50;
+// Отступ снизу от картинки
 let offsetBottom = 25;
-//Видимое количество досточек
+// Видимое количество досточек
 let deskCount = 15;
-//Массив точек
+// Массив точек досточек
 let desksXY;
-//Счет
+// Счет
 let score = 0;
 
-//Физические параметры
+// Физические параметры
+// Количество пикселей притяжения
 let gravity = 4;
+// Начальное положение дудлика по оХ
 let xPos = width/2 - doodleWidth/2;
+// Начальное положение дудлика по оУ
 let yPos = height - doodleHeight - deskHeight - offsetBottom;
+// Высота прыжка
 let jumpHeight = 130;
 // Признак прыжка
+// Находится ли еще дудлик в воздухе или нет
+// Применяется для метода jump
 let jumped = false;
 // Прыжок по нажатию
 let newY;
 
 // Функции
-
-//Создание доски
+/*
+*Создание досок
+*
+*Принимает диапозон возможного положения досок
+*
+*@param int $minX Минимальное возможно значение координаты по оси оХ
+*@param int $maxX Максимальное возможно значение координаты по оси оХ
+*@param int $minY Минимальное возможно значение координаты по оси оУ
+*@param int $maxY Максимальное возможно значение координаты по оси оУ
+*/
 function createDesk(minX,maxX,minY,maxY){
   // Прописать правило генерации
   let flag = false;
@@ -78,7 +124,19 @@ function createDesk(minX,maxX,minY,maxY){
   flag = false;
   desksXY.push(point);
 }
-// Проверка на пересечение досточек
+/*
+*Проверка на пересечение досточек
+*
+*Принимает коориданты новой потенциальной досточки
+*и координаты существующей досточки. Если досточки будут пересекаться
+*возвращает false иначе true
+*
+*@param int $x1 координата х первой досточки
+*@param int $y1 оордината у первой досточки
+*@param int $x координата х второй досточки
+*@param int $y координата у второй досточки
+*@return bool temp признак пересечения досточек
+*/
 function checkIntersektDesk(x1,y1,x,y){
   if(
       (x1 < x + deskWidth || x1 > x + deskWidth) &&
@@ -89,7 +147,11 @@ function checkIntersektDesk(x1,y1,x,y){
   }
   return false;
 }
-// Генерация массива координат досок
+/*
+*Генерация массива координат досок
+*
+*Данный метод формерует массив точек для досточек
+*/
 function createDesks(){
   let tempX = width/2 - deskWidth/2;
   let tempY = height - deskHeight;
@@ -97,8 +159,12 @@ function createDesks(){
   for(let i = 0; i < deskCount-1; i++)
     createDesk(0,width-deskWidth,-400,height-deskHeight);
 }
-
-// Прыжок
+/*
+*Метод для прыжка дудлика
+*
+*Данный метод меняет значение переменной jumped в 
+*следствии чего происходит прыжок
+*/
 function jump(){
   newY = yPos - jumpHeight;
   jumped = true;
@@ -106,7 +172,14 @@ function jump(){
     jumpAudio.play();
 }
 
-//Движение
+/*
+*Метод для передвижения дулика влево/вправо
+*
+*Принимает событие нажатия клавиши
+*Изменяет положение дудлика на игровом поле
+*
+*@param event $e событие нажатия клавиши
+*/
 function move(e){
   switch(e.keyCode){
     case 37:  // если нажата клавиша влево
@@ -124,7 +197,12 @@ function move(e){
   }
 }
 
-// Отрисовка сетки
+/*
+*Метод для формирования картинки фона
+*
+*Формирует клетчатое поле и присвает его переменной картинке background
+*
+*/
 function drawBG(){
   context.fillStyle = "white";
   context.fillRect(0,0,width,height);
@@ -145,7 +223,12 @@ function drawBG(){
 //Признак движения камеры
 let moveCamera = false;
 
-//Отрисовка сцены
+/*
+*Метод для отрисовки объектов на сцене
+*
+*Отображает все объекты на сцене игры
+*Вызыввается асинхронным методом бесконечное число раз
+*/
 function draw(){
   //Если дудлик уже выше серидины
   if(yPos < height/5)
@@ -173,7 +256,7 @@ function draw(){
     jumped = false;
     yPos += gravity;
   }
-  //Счет
+  //Вызов метода для отрисовки счета
   drawScore();
   //
   if(yPos>height+100){
@@ -182,7 +265,7 @@ function draw(){
     alert("You lose!");
     lose = true;
   }
-  //Отрисовка кнопок
+  //Отрисовка кнопки аудио и перегрузки
   context.drawImage(reload,width - buttonWidth - 10,10,buttonWidth,buttonHeight);
   context.drawImage(audio,10,10,buttonWidth,buttonHeight);
   //Если проиграл - выход
@@ -191,14 +274,22 @@ function draw(){
     else
       return;
 }
-// Вывод счета
+/*
+*Метод для отрисовки счета
+*
+*отрисовыает счет на игровом поле
+*/
 function drawScore(){
   context.fillStyle = "black";
   context.strokeStyle = "black";
   context.font = '32px sans-serif';
   context.strokeText(Math.floor(score), width/2-score/15, 32);
 }
-//Отрисовка досок
+/*
+*Метод для отрисовки досок
+*
+*отрисовыает все доски на игровом поле
+*/
 function drawDesks(){
   for(let i = 0; i < desksXY.length; i++){
     if(moveCamera){
@@ -218,10 +309,22 @@ function drawDesks(){
       }
   }
 }
-// Рандомное число
+/*
+*Метод для получения случайного числа в диапоззоне
+*
+*Принимает минимальное и максимально значение 
+*Возвращает случайное число в диапозоне
+*
+*@param int $min Минимальное значение
+*@param int $max Максимальное значение
+*/
 function getRandomInt(min, max){
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
+/*
+*Метод для создание игровой сцены
+*
+*/
 function createScene(){
   //Координаты досточек
   desksXY = new Array();
@@ -244,8 +347,7 @@ function createScene(){
           setAudioOn();
         else setAudioOff();
     }, false);
-    // Отрисовка дудлика
-
+    // Отрисовка дудлика в начальном положении
     xPos = width/2 - doodleWidth/2;
     yPos = height - doodleHeight - deskHeight - offsetBottom;
     context.drawImage(doodle,xPos,yPos,doodleWidth,doodleHeight);
@@ -253,16 +355,24 @@ function createScene(){
 
 //Переменная состояния звука
 let mute = false;
-// Выключить звук
+/*
+*Метод для включения звука
+*
+*/
 function setAudioOn(){
   audio.src = "img/audio.png";
   mute = false;
 }
-// Включить звук
+/*
+*Метод для выключения звука
+*
+*/
 function setAudioOff(){
   audio.src = "img/audioPause.png";
   mute = true;
 }
 //Вызовы
+// Создание фона
 drawBG();
+// Создание игроовой сцены
 createScene();
