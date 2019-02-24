@@ -24,8 +24,8 @@ let doodleWidth = 100;
 let doodleHeight = 100;
 let deskWidth = 100;
 let deskHeight = 30;
-let buttonWidth = 40;
-let buttonHeight = 40;
+let buttonWidth = 50;
+let buttonHeight = 50;
 //Звуки
 let jumpAudio = new Audio();
 jumpAudio.src = "audio/jump.mp3"
