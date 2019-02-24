@@ -201,7 +201,6 @@ function drawDesks(){
 function getRandomInt(min, max){
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
 function createScene(){
   //Координаты досточек
   desksXY = new Array();
