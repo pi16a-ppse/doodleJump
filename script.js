@@ -26,6 +26,7 @@ let deskWidth = 100;
 let deskHeight = 30;
 let buttonWidth = 35;
 let buttonHeight = 35;
+
 //Звуки
 let jumpAudio = new Audio();
 jumpAudio.src = "audio/jump.mp3"
