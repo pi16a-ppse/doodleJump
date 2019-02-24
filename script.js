@@ -49,7 +49,7 @@ let score = 0;
 let gravity = 4;
 let xPos = width/2 - doodleWidth/2;
 let yPos = height - doodleHeight - deskHeight - offsetBottom;
-let jumpHeight = 170;
+let jumpHeight = 130;
 // Признак прыжка
 let jumped = false;
 // Прыжок по нажатию
@@ -59,19 +59,43 @@ let newY;
 
 //Создание доски
 function createDesk(minX,maxX,minY,maxY){
-  let point = new Array();
-  point.push(getRandomInt(minX,maxX));
-  point.push(getRandomInt(minY,maxY));
+  // Прописать правило генерации
+  let flag = false;
+  let point;
+  do{
+    //Создаем точку
+    point = new Array();
+    point.push(getRandomInt(minX,maxX));
+    point.push(getRandomInt(minY,maxY));
+    for(let i = 0; i < desksXY.length; i++){
+      if(
+        point[1] > desksXY[i][1] - jumpHeight && 
+        checkIntersektDesk(desksXY[i][0],desksXY[i][1],point[0],point[1])
+        )
+        flag = true;
+    }
+  }while(!flag)
+  flag = false;
   desksXY.push(point);
 }
-
+// Проверка на пересечение досточек
+function checkIntersektDesk(x1,y1,x,y){
+  if(
+      (x1 < x + deskWidth || x1 > x + deskWidth) &&
+      (y1 < y - deskHeight || y1 > y + deskHeight)
+    ){
+    console.log(x1," < ",x+deskWidth,"; ",y1," < ",y - deskHeight);
+    return true;
+  }
+  return false;
+}
 // Генерация массива координат досок
 function createDesks(){
-  for(let i = 0; i < deskCount-1; i++)
-    createDesk(0,width-deskWidth,-400,height-deskHeight)
   let tempX = width/2 - deskWidth/2;
   let tempY = height - deskHeight;
   desksXY.push([tempX, tempY]);
+  for(let i = 0; i < deskCount-1; i++)
+    createDesk(0,width-deskWidth,-400,height-deskHeight);
 }
 
 // Прыжок
@@ -158,6 +182,7 @@ function draw(){
     alert("You lose!");
     lose = true;
   }
+  //Отрисовка кнопок
   context.drawImage(reload,width - buttonWidth - 10,10,buttonWidth,buttonHeight);
   context.drawImage(audio,10,10,buttonWidth,buttonHeight);
   //Если проиграл - выход
