@@ -15,10 +15,14 @@ let doodle = new Image();
 let reload = new Image();
 let background = new Image();
 let desk = new Image();
+let audio = new Image();
+audio.src = "img/audio.png";
 doodle.src = "img/doodleRight.png";
 desk.src = "img/desk.png";
 reload.src = "img/reload.png";
 let doodleWidth = 100;
+let audioWidth = 40;
+let audioHeight = 40;
 let doodleHeight = 100;
 let deskWidth = 100;
 let deskHeight = 30;
@@ -75,7 +79,8 @@ function createDesks(){
 function jump(){
   newY = yPos - jumpHeight;
   jumped = true;
-  // jumpAudio.play();
+  if(!mute)
+    jumpAudio.play();
 }
 
 //Движение
@@ -149,7 +154,8 @@ function draw(){
   drawScore();
   //
   if(yPos>height+100){
-    failAudio.play();
+    if(!mute)
+      failAudio.play();
     alert("You lose!");
     lose = true;
   }
@@ -191,8 +197,6 @@ function drawDesks(){
 function getRandomInt(min, max){
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
-
 function createScene(){
   //Координаты досточек
   desksXY = new Array();
@@ -217,7 +221,18 @@ function createScene(){
     yPos = height - doodleHeight - deskHeight - offsetBottom;
     context.drawImage(doodle,xPos,yPos,doodleWidth,doodleHeight);
 }
-
+//Переменная состояния звука
+let mute = false;
+// Выключить звук
+function setAudioOn(){
+  audio.src = "img/audio.png";
+  mute = false;
+}
+// Включить звук
+function setAudioOff(){
+  audio.src = "img/audioPause.png";
+  mute = true;
+}
 //Вызовы
 drawBG();
 createScene();
