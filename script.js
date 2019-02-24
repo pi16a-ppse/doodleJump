@@ -21,8 +21,6 @@ doodle.src = "img/doodleRight.png";
 desk.src = "img/desk.png";
 reload.src = "img/reload.png";
 let doodleWidth = 100;
-let audioWidth = 40;
-let audioHeight = 40;
 let doodleHeight = 100;
 let deskWidth = 100;
 let deskHeight = 30;
@@ -82,11 +80,7 @@ function jump(){
   if(!mute)
     jumpAudio.play();
 }
-function newJump(){
-   jumped = true;
-  if(!mute)
-    jumpAudio.play();
-}
+
 //Движение
 function move(e){
   switch(e.keyCode){
@@ -164,6 +158,7 @@ function draw(){
     lose = true;
   }
   context.drawImage(reload,width - buttonWidth - 10,10,buttonWidth,buttonHeight);
+  context.drawImage(audio,10,10,buttonWidth,buttonHeight);
   //Если проиграл - выход
   if(!lose)
     requestAnimationFrame(draw);
@@ -218,6 +213,10 @@ function createScene(){
     let y = event.pageY - canvasTop;
     if(x > width-buttonWidth - 10 && x < width - 10 && y > 10 && y < 10 + buttonHeight)
         createScene();
+    if(x > 10 && x < buttonWidth + 10 && y > 10 && y < 10 + buttonHeight)
+        if(mute)
+          setAudioOn();
+        else setAudioOff();
     }, false);
     // Отрисовка дудлика
 
