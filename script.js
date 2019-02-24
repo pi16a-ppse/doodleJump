@@ -75,7 +75,8 @@ addEventListener("keydown", move)
 function jump(){
   newY = yPos - jumpHeight;
   jumped = true;
-  jumpAudio.play();
+  if(!mute)
+    jumpAudio.play();
 }
 //Движение
 function move(e){
@@ -162,7 +163,8 @@ function draw(){
   context.strokeText(Math.floor(score), width/2-score/10, 32);
   //
   if(yPos>height+100){
-    failAudio.play();
+    if(!mute)
+      failAudio.play();
     alert("You lose!");
     lose = true;
   }
@@ -176,7 +178,18 @@ function draw(){
 function getRandomInt(min, max){
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
+//Переменная состояния звука
+let mute = false;
+// Выключить звук
+function setAudioOn(){
+  audio.src = "img/audio.png";
+  mute = false;
+}
+// Включить звук
+function setAudioOff(){
+  audio.src = "img/audioPause.png";
+  mute = true;
+}
 //Вызовы
 drawBG();
 desk.onload = draw;
