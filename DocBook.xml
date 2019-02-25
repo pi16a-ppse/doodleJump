@@ -11,6 +11,7 @@
 		<copyright>
 			<year>2019</year>
 			<holder>Капков Юрий</holder>
+			<city>Донецк</city>
 		</copyright>
 	</info>
 	<chapter>
@@ -32,17 +33,17 @@
             <title>Выключениу звука игры</title>
             <para>При нажатии кнопки звука в левом вехнем углу игры, всн звуковые эффекты перестают вопроизводиться.</para>
             <example>
-                <programlisting><![CDATA[
+                <code><![CDATA[
                 audio.src = "img/audioPause.png";
     			mute = true;
-                ]]></programlisting>
+                ]]></code>
             </example>
         </section>
         <section>
             <title>Расчет столкновения дудлика и досточки</title>
             <para>При пересечении дудлика и досточки должен вызываться метод прыжка</para>
             <example>
-                <programlisting><![CDATA[
+                <code><![CDATA[
                 for(let i = 0; i < desksXY.length; i++){
 			        if(yPos+doodleHeight - offsetBottom >= desksXY[i][1] &&
 			            yPos+doodleHeight - offsetBottom <   desksXY[i][1] + deskHeight
@@ -59,14 +60,14 @@
 			        jumped = false;
 			        yPos += gravity;
 			    }
-                ]]></programlisting>
+                ]]></code>
             </example>
         </section>
         <section>
             <title>Генерация досточек</title>
             <para>При создании досточек должна учитываться высота прыжка дудлика, чтобы он мог физически до нее допрыгнуть.</para>
             <example>
-                <programlisting><![CDATA[
+                <code><![CDATA[
                 let flag = false;
     			let point;
 			    do{
@@ -84,7 +85,7 @@
 			    }while(!flag)
 			    flag = false;
 			    desksXY.push(point);
-                ]]></programlisting>
+                ]]></code>
             </example>
         </section>
     </chapter>
