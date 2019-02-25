@@ -105,7 +105,6 @@ let newY;
 *@param int $maxY Максимальное возможно значение координаты по оси оУ
 */
 function createDesk(minX,maxX,minY,maxY){
-    // Прописать правило генерации
     let flag = false;
     let point;
     do{

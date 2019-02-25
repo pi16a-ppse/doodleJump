@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<book>
+	<info>
+		<title>Документация к проекту doodleJump</title>
+		<author>
+			<personname>
+				<firstname>Юрий</firstname>
+				<surname>Капков</surname>
+			</personname>
+		</author>
+		<copyright>
+			<year>2019</year>
+			<holder>Капков Юрий</holder>
+		</copyright>
+	</info>
+	<chapter>
+		<title>Описание проекта</title>
+		<para>Данный проект является моей упрощенной реализацией популярной игры doodle jump, реализованной под браузеры.</para>
+		<para>Для открытия игры необходимо вначале скачать ее по ссылке: https://github.com/pi16a-ppse/doodleJump
+		</para>
+		<section>
+            <title>Особенности проекта</title>
+            <para>Управление происходит благодаря нажатиям клавиш "влево" и "вправо"</para>
+            <para>Звук можно отключать и включать по нажатию на соответсвующую кнопку</para>
+            <para>Есть возможность досрочной перезагрузки игры по нажатию соотвеетсвующей кнопки</para>
+        </section>
+	</chapter>
+	<chapter>
+        <title>Детали реализации</title>
+        <para>Особенности реализации отдельного функционала представлены ниже:</para>
+        <section>
+            <title>Выключениу звука игры</title>
+            <para>При нажатии кнопки звука в левом вехнем углу игры, всн звуковые эффекты перестают вопроизводиться.</para>
+            <example>
+                <programlisting><![CDATA[
+                audio.src = "img/audioPause.png";
+    			mute = true;
+                ]]></programlisting>
+            </example>
+        </section>
+        <section>
+            <title>Расчет столкновения дудлика и досточки</title>
+            <para>При пересечении дудлика и досточки должен вызываться метод прыжка</para>
+            <example>
+                <programlisting><![CDATA[
+                for(let i = 0; i < desksXY.length; i++){
+			        if(yPos+doodleHeight - offsetBottom >= desksXY[i][1] &&
+			            yPos+doodleHeight - offsetBottom <   desksXY[i][1] + deskHeight
+			            && xPos + doodleWidth - offsetRight > desksXY[i][0] &&
+			            xPos < desksXY[i][0] + deskWidth - offsetLeft)
+			            // Если дудлик еще в полете - не прыгаем
+			            if(!jumped)
+			               jump();
+			    }
+			    //Направление движения
+			    if(jumped&&yPos>newY){
+			        yPos -= gravity;
+			    }else{
+			        jumped = false;
+			        yPos += gravity;
+			    }
+                ]]></programlisting>
+            </example>
+        </section>
+        <section>
+            <title>Генерация досточек</title>
+            <para>При создании досточек должна учитываться высота прыжка дудлика, чтобы он мог физически до нее допрыгнуть.</para>
+            <example>
+                <programlisting><![CDATA[
+                let flag = false;
+    			let point;
+			    do{
+			        //Создаем точку
+			        point = new Array();
+			        point.push(getRandomInt(minX,maxX));
+			        point.push(getRandomInt(minY,maxY));
+			        for(let i = 0; i < desksXY.length; i++){
+			            if(
+			                point[1] > desksXY[i][1] - jumpHeight && 
+			                checkIntersektDesk(desksXY[i][0],desksXY[i][1],point[0],point[1])
+			                )
+			                flag = true;
+			        }
+			    }while(!flag)
+			    flag = false;
+			    desksXY.push(point);
+                ]]></programlisting>
+            </example>
+        </section>
+    </chapter>
+</book>
