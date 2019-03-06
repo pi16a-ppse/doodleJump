@@ -1,25 +1,25 @@
 *{
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  text-decoration: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
 }
 .container{
-  width: 100vw;
-  height: 100vh;
-  background-color: #7c818f;
-  padding-top: 5vh;
-  box-sizing: border-box;
+    width: 100vw;
+    height: 100vh;
+    background-color: #7c818f;
+    padding-top: 5vh;
+    box-sizing: border-box;
 }
 .game{
-  max-width: 500px;
-  background-color: white;
-  display: block;
-  margin: 0 auto;
+    max-width: 500px;
+    background-color: white;
+    display: block;
+    margin: 0 auto;
 }
 .navigation{
-  height: 40px;
-  margin: 0 auto;
-  width: 450px;
-  background-color: white;
+    height: 40px;
+    margin: 0 auto;
+    width: 450px;
+    background-color: white;
 }

@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: script.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: script.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
 * Ширина клетки фона
 */
 let cellWidth = 20;
@@ -196,8 +224,8 @@ function createDesk(minX,maxX,minY,maxY){
         point = new Array();
         point.push(getRandomInt(minX,maxX));
         point.push(getRandomInt(minY,maxY));
-        for (let i = 0; i < desksXY.length; i++){
-            if (point[1] > desksXY[i][1] - jumpHeight && checkIntersektDesk(desksXY[i][0],desksXY[i][1],point[0],point[1])){
+        for (let i = 0; i &lt; desksXY.length; i++){
+            if (point[1] > desksXY[i][1] - jumpHeight &amp;&amp; checkIntersektDesk(desksXY[i][0],desksXY[i][1],point[0],point[1])){
                  flag = true;
             }
         }
@@ -220,8 +248,8 @@ function createDesk(minX,maxX,minY,maxY){
 *
 */
 function checkIntersektDesk(x1,y1,x,y){
-    if ((x1 < x + deskWidth || x1 > x + deskWidth) &&
-       (y1 < y - deskHeight || y1 > y + deskHeight)){
+    if ((x1 &lt; x + deskWidth || x1 > x + deskWidth) &amp;&amp;
+       (y1 &lt; y - deskHeight || y1 > y + deskHeight)){
         return true;
     }
     return false;
@@ -235,7 +263,7 @@ function createDesks(){
     let tempX = width/2 - deskWidth/2;
     let tempY = height - deskHeight;
     desksXY.push([tempX, tempY]);
-    for (let i = 0; i < deskCount-1; i++)
+    for (let i = 0; i &lt; deskCount-1; i++)
         createDesk(0,width-deskWidth,-400,height-deskHeight);
 }
 /**
@@ -262,7 +290,7 @@ function jump(){
 function move(e){
     switch(e.keyCode){
         case 37:    // если нажата клавиша влево
-            if (xPos<0-doodleWidth)
+            if (xPos&lt;0-doodleWidth)
                 xPos = width;
             xPos-=8;
             doodle.src = "img/doodleLeft.png";
@@ -285,11 +313,11 @@ function move(e){
 function drawBG(){
     context.fillStyle = "white";
     context.fillRect(0,0,width,height);
-    for  (let i = 0; i < width; i+=cellHeight) {
+    for  (let i = 0; i &lt; width; i+=cellHeight) {
         context.moveTo(i,0);
         context.lineTo(i,height);
     }
-    for  (let j = 0; j < height; j+=cellWidth) {
+    for  (let j = 0; j &lt; height; j+=cellWidth) {
         context.moveTo(0,j);
         context.lineTo(width,j);
     }
@@ -310,7 +338,7 @@ let moveCamera = false;
 */
 function draw(){
     //Если дудлик уже выше серидины
-    if (yPos < height/2){
+    if (yPos &lt; height/2){
         moveCamera = true;
     }
     else {
@@ -321,17 +349,17 @@ function draw(){
     //Отрисовка досок
     drawDesks();
     //Логика столкновения
-    for (let i = 0; i < desksXY.length; i++){
-        if (yPos+doodleHeight - offsetBottom >= desksXY[i][1] &&
-             yPos+doodleHeight - offsetBottom <    desksXY[i][1] + deskHeight
-             && xPos + doodleWidth - offsetRight > desksXY[i][0] &&
-             xPos < desksXY[i][0] + deskWidth - offsetLeft)
+    for (let i = 0; i &lt; desksXY.length; i++){
+        if (yPos+doodleHeight - offsetBottom >= desksXY[i][1] &amp;&amp;
+             yPos+doodleHeight - offsetBottom &lt;    desksXY[i][1] + deskHeight
+             &amp;&amp; xPos + doodleWidth - offsetRight > desksXY[i][0] &amp;&amp;
+             xPos &lt; desksXY[i][0] + deskWidth - offsetLeft)
              // Если дудлик еще в полете - не прыгаем
              if (!jumped)
                     jump();
     }
     //Направление движения
-    if (jumped&&yPos>newY){
+    if (jumped&amp;&amp;yPos>newY){
         yPos -= gravity;
     }
     else {
@@ -376,13 +404,13 @@ function drawScore(){
 *отрисовыает все доски на игровом поле
 */
 function drawDesks(){
-    for (let i = 0; i < desksXY.length; i++){
+    for (let i = 0; i &lt; desksXY.length; i++){
         if (moveCamera){
             desksXY[i][1] += 6;
             //Увеличение счета
             score += 1/100;
             //Если счет увеличивается на 50, количество досок уменьшаем
-            if (score!=0&&score%50==0){
+            if (score!=0&amp;&amp;score%50==0){
                 deskCount--;
             }
         }
@@ -390,7 +418,7 @@ function drawDesks(){
         context.drawImage(desk,desksXY[i][0],desksXY[i][1],deskWidth,deskHeight);
         if (desksXY[i][1] > height){
             desksXY.splice(i,1);
-            if (desksXY.length < deskCount){
+            if (desksXY.length &lt; deskCount){
                 createDesk(0,width-deskWidth,-200,0);
             }
         }
@@ -427,9 +455,9 @@ function createScene(){
     canvas.addEventListener('click', function(event) {
         let x = event.pageX - canvasLeft;
         let y = event.pageY - canvasTop;
-        if (x > width-buttonWidth - 10 && x < width - 10 && y > 10 && y < 10 + buttonHeight)
+        if (x > width-buttonWidth - 10 &amp;&amp; x &lt; width - 10 &amp;&amp; y > 10 &amp;&amp; y &lt; 10 + buttonHeight)
             createScene();
-        if (x > 10 && x < buttonWidth + 10 && y > 10 && y < 10 + buttonHeight)
+        if (x > 10 &amp;&amp; x &lt; buttonWidth + 10 &amp;&amp; y > 10 &amp;&amp; y &lt; 10 + buttonHeight)
             if (mute)
                 setAudioOn();
             else  setAudioOff();
@@ -463,3 +491,26 @@ function setAudioOff(){
 drawBG();
 // Создание игроовой сцены
 createScene();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#audio">audio</a></li><li><a href="global.html#background">background</a></li><li><a href="global.html#buttonHeight">buttonHeight</a></li><li><a href="global.html#buttonWidth">buttonWidth</a></li><li><a href="global.html#canvas">canvas</a></li><li><a href="global.html#cellHeight">cellHeight</a></li><li><a href="global.html#cellWidth">cellWidth</a></li><li><a href="global.html#checkIntersektDesk">checkIntersektDesk</a></li><li><a href="global.html#context">context</a></li><li><a href="global.html#createDesk">createDesk</a></li><li><a href="global.html#createDesks">createDesks</a></li><li><a href="global.html#createScene">createScene</a></li><li><a href="global.html#desk">desk</a></li><li><a href="global.html#deskCount">deskCount</a></li><li><a href="global.html#deskHeight">deskHeight</a></li><li><a href="global.html#desksXY">desksXY</a></li><li><a href="global.html#deskWidth">deskWidth</a></li><li><a href="global.html#doodle">doodle</a></li><li><a href="global.html#doodleHeight">doodleHeight</a></li><li><a href="global.html#doodleWidth">doodleWidth</a></li><li><a href="global.html#draw">draw</a></li><li><a href="global.html#drawBG">drawBG</a></li><li><a href="global.html#drawDesks">drawDesks</a></li><li><a href="global.html#drawScore">drawScore</a></li><li><a href="global.html#failAudio">failAudio</a></li><li><a href="global.html#getRandomInt">getRandomInt</a></li><li><a href="global.html#gravity">gravity</a></li><li><a href="global.html#height">height</a></li><li><a href="global.html#jump">jump</a></li><li><a href="global.html#jumpAudio">jumpAudio</a></li><li><a href="global.html#jumped">jumped</a></li><li><a href="global.html#jumpHeight">jumpHeight</a></li><li><a href="global.html#lose">lose</a></li><li><a href="global.html#move">move</a></li><li><a href="global.html#newY">newY</a></li><li><a href="global.html#offsetBottom">offsetBottom</a></li><li><a href="global.html#offsetLeft">offsetLeft</a></li><li><a href="global.html#offsetRight">offsetRight</a></li><li><a href="global.html#reload">reload</a></li><li><a href="global.html#score">score</a></li><li><a href="global.html#setAudioOff">setAudioOff</a></li><li><a href="global.html#setAudioOn">setAudioOn</a></li><li><a href="global.html#width">width</a></li><li><a href="global.html#xPos">xPos</a></li><li><a href="global.html#yPos">yPos</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Mar 06 2019 21:03:53 GMT+0300 (GMT+03:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
