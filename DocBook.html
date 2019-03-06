@@ -1,47 +1,56 @@
-<h1>Описание проекта</h1>
-<p>Данный проект является моей упрощенной реализацией популярной игры doodle jump, реализованной под браузеры.</p>
-<p>Для открытия игры необходимо вначале скачать ее по ссылке: https://github.com/pi16a-ppse/doodleJump</p>
-<h2>Особенности проекта</h2>
-<p>Управление происходит благодаря нажатиям клавиш "влево" и "вправо"</p>
-<p>Звук можно отключать и включать по нажатию на соответсвующую кнопку</p>
-<p>Есть возможность досрочной перезагрузки игры по нажатию соотвеетсвующей кнопки</p>
-<h1>Детали реализации</h1>
-<p>Особенности реализации отдельного функционала представлены ниже:</p>
-<h2>Выключениу звука игры</h2>
-<p>При нажатии кнопки звука в левом вехнем углу игры, всн звуковые эффекты перестают вопроизводиться.</p>
-<pre><code>                
-    audio.src = &quot;img/audioPause.png&quot;;
-    mute = true;
-</code></pre>
-<h2>Расчет столкновения дудлика и досточки</h2>
-<p>При пересечении дудлика и досточки должен вызываться метод прыжка</p>
-<pre><code>                
-    for(let i = 0; i &lt; desksXY.length; i++){
-        if(yPos+doodleHeight - offsetBottom &gt;= desksXY[i][1] &amp;&amp;
-            yPos+doodleHeight - offsetBottom &lt;   desksXY[i][1] + deskHeight
-            &amp;&amp; xPos + doodleWidth - offsetRight &gt; desksXY[i][0] &amp;&amp;
-            xPos &lt; desksXY[i][0] + deskWidth - offsetLeft)
-            // Если дудлик еще в полете - не прыгаем
-            if(!jumped)
-               jump();
-    }
-    //Направление движения
-    if(jumped&amp;&amp;yPos&gt;newY){
-        yPos -= gravity;
-    }else{
-        jumped = false;
-        yPos += gravity;
-    }
-</code></pre>
-<h2>Генерация досточек</h2>
-<p>При создании досточек должна учитываться высота прыжка дудлика, чтобы он мог физически до нее допрыгнуть.</p>
-<pre><code>                
-    let flag = false;
-    let point;
-    do{
-        //Создаем точку
-        point = new Array();
-        point.push(getRandomInt(minX,maxX));
-        point.push(getRandomInt(minY,maxY));
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Документация к проекту doodleJump</title>
+</head>
+<body>
+    <h1>Описание проекта</h1>
+    <p>Данный проект является моей упрощенной реализацией популярной игры doodle jump, реализованной под браузеры.</p>
+    <p>Для открытия игры необходимо вначале скачать ее по ссылке: https://github.com/pi16a-ppse/doodleJump</p>
+    <h2>Особенности проекта</h2>
+    <p>Управление происходит благодаря нажатиям клавиш "влево" и "вправо"</p>
+    <p>Звук можно отключать и включать по нажатию на соответсвующую кнопку</p>
+    <p>Есть возможность досрочной перезагрузки игры по нажатию соотвеетсвующей кнопки</p>
+    <h1>Детали реализации</h1>
+    <p>Особенности реализации отдельного функционала представлены ниже:</p>
+    <h2>Выключениу звука игры</h2>
+    <p>При нажатии кнопки звука в левом вехнем углу игры, всн звуковые эффекты перестают вопроизводиться.</p>
+    <pre><code>                
+        audio.src = &quot;img/audioPause.png&quot;;
+        mute = true;
+    </code></pre>
+    <h2>Расчет столкновения дудлика и досточки</h2>
+    <p>При пересечении дудлика и досточки должен вызываться метод прыжка</p>
+    <pre><code>                
         for(let i = 0; i &lt; desksXY.length; i++){
-</code></pre>
+            if(yPos+doodleHeight - offsetBottom &gt;= desksXY[i][1] &amp;&amp;
+                yPos+doodleHeight - offsetBottom &lt;   desksXY[i][1] + deskHeight
+                &amp;&amp; xPos + doodleWidth - offsetRight &gt; desksXY[i][0] &amp;&amp;
+                xPos &lt; desksXY[i][0] + deskWidth - offsetLeft)
+                // Если дудлик еще в полете - не прыгаем
+                if(!jumped)
+                   jump();
+        }
+        //Направление движения
+        if(jumped&amp;&amp;yPos&gt;newY){
+            yPos -= gravity;
+        }else{
+            jumped = false;
+            yPos += gravity;
+        }
+    </code></pre>
+    <h2>Генерация досточек</h2>
+    <p>При создании досточек должна учитываться высота прыжка дудлика, чтобы он мог физически до нее допрыгнуть.</p>
+    <pre><code>                
+        let flag = false;
+        let point;
+        do{
+            //Создаем точку
+            point = new Array();
+            point.push(getRandomInt(minX,maxX));
+            point.push(getRandomInt(minY,maxY));
+            for(let i = 0; i &lt; desksXY.length; i++){
+    </code></pre>
+</body>
+</html>
+
